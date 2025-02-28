@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,11 +22,11 @@ public class LoginCache {
     private static final int MAX_CACHE = 10;
     // I use this FIFO list to keep track on the last user ids added to the cache.
     // This is used to easy remove the first added user id from the cache when the cache needs to be reduced.
-    private static Queue<String> lastLoggedInUserIds = new LinkedList<>();
+    private static final Queue<String> lastLoggedInUserIds = new LinkedList<>();
     // Use HashMap even though it is not thread safe as ConcurrentHashMap or HashTable.
     // In this case I synchronize on LoginCache itself, as we are also using a queue.
     // If no queue was used, I would have used ConcurrentHashMap
-    private static Map<String, LocalDateTime> cache = new HashMap<>(MAX_CACHE);
+    private static final Map<String, LocalDateTime> cache = new HashMap<>(MAX_CACHE);
 
     /**
      * Adds the specified user id with the specified time to the cache. If the cache has reached its max size, the oldest entry will be removed.
